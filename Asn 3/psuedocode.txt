@@ -1,0 +1,148 @@
+Class Player
+
+{
+private:
+		//variables
+	short position;
+	string name;
+	bool winner;
+
+
+public:
+	Player(); 	//constructor
+	~Player();	//destructor
+
+		//setters
+	*void setPos(int const amt);	//roll
+	void setWin(bool const win);	//win
+		
+		//getters
+	short getPos() const;
+	string getName() const;
+	bool getWin() const;
+		
+
+};
+
+/*******Member Functions********/
+Player::Player(string p_name)
+{ 	short position = 0;
+	string name = p_name;
+	winner = false;
+};
+
+void Player::setPos(int const amt)
+{	position += amt;	};
+
+void Player::setWin(bool const win)
+{	winner = win;		};
+
+short Player::getPos() const
+{	return position;	};
+
+string Player::getName() const
+{	return name;		};
+
+bool Player::getWin() const
+{	return winner;		};
+
+
+/*****Stand Alone Functions*****/
+short roll()
+{};
+
+bool gameOver(Player p)
+{	if (p.getPos() <= HILLTOP)
+		{p.setWin(true);}
+};
+
+/******Overload Functions*******/
+	//overload ==
+bool operator==(const Player& p, const Player& q)
+{	return p.getPos() == q.getPos();		};
+
+	//overload <<
+std::ostream& operator<<(std::ostream& ost, const Player& p)
+{
+	cout << p.position;
+	return ost;
+};
+
+
+short HILLTOP = 20;
+int main()
+{	srand(time(NULL));
+	
+
+
+
+
+
+
+	return EXIT_SUCCESS;
+}
+
+
+	cout << "It's a race to the top of the hill!" << endl;
+	cout << "First player to 20 wins, but don't land on your opponent \n or you'll fall back down the hill!" << endl << endl;
+
+	short roll=0, Jack=0, Jill=0;
+	bool win = false;
+	std::string winner = " ";
+
+	
+	cout << std::setw(6) << "Roll" << std::setw(6) << "Jack" << std::setw(6) << "Jill" << endl;
+	cout << std::setw(32) << cout.fill('-');
+	cout.fill(' '); cout << endl;
+
+	do {
+		/*Jack's turn*/
+		roll = rand() % 6 + 1; 
+		Jack += roll; 
+		if (Jack == Jill)
+		{
+			Jill -= rand() % 3 + 1;
+			if (Jill < 0) //If tumble goes back to a negative number, set to beginning.
+			{
+				Jill = 0;
+			}
+			cout << std::setw(6) << roll << std::setw(6) << Jack << std::setw(6) << Jill;  //Output Jack and Jill.
+			cout << "   Jill tumbles!" << endl;
+		}
+		else {
+			cout << std::setw(6) << roll << std::setw(6) << Jack << std::setw(6) << ' ' << endl; //Output only Jack.
+		}
+		if (Jack >= 20)
+		{
+			winner = "Jack";
+			win = true;	
+		}
+		else{
+			/*Jill's Turn*/
+			roll = rand() % 6 + 1;
+			Jill += roll;
+			if (Jill == Jack)   
+			{
+				Jack -= rand() % 3 + 1;
+				if (Jack < 0)	//If tumble goes back to a negative number, set to beginning.
+				{
+					Jack = 0;
+				}
+				cout << std::setw(6) << roll << std::setw(6) << Jack << std::setw(6) << Jill;  //Output Jack and Jill.
+				cout << "   Jack tumbles!" << endl;
+			}
+			else {
+				cout << std::setw(6) << roll << std::setw(6) << ' ' << std::setw(6) << Jill << endl; //Output only Jill.
+			}
+			if (Jill >= 20)
+			{
+				winner = "Jill";
+				win = true;
+				break;
+			}
+		}
+		
+	} while (!win);
+
+	cout << endl << winner <<" wins!";  //Output winner.
+	cout << endl << endl;
